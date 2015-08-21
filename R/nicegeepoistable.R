@@ -1,12 +1,9 @@
 
 #' Lisa's GEE Poisson Regression Table Function - fit must be geeglm type model 
 #'
-#' This function creates a nice looking summary table similar 
-#' to the Mayo clinic SAS table macro. 
 #' @param df Dataframe. 
 #' @param fit Poisson geeglm (geepack) model object.
-#' @param ref If TRUE, the reference category gets its own line (left blank). 
-#' Default is FALSE.
+#' @param ref If TRUE, the reference category gets its own line (left blank). Default is FALSE.
 #' @param labels Covariate labels - default is NA.
 #' @param blanks If TRUE, blank lines will be inserted separating covariates - default is FALSE.
 #' @param overallp is FALSE always (LR p-value not supported in geeglm)
