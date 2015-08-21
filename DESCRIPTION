@@ -1,0 +1,17 @@
+Package: daphne
+Title: This package creates nice looking regression tables.
+Version: 0.1
+Authors@R: "Lisa Rein <lisaerein@gmail.com> [aut, cre]"
+Description: This package creates nice looking regression tables. There are
+    several functions for different types of models. Each function returns a
+    dataframe and also prints an html table by default for use in R markdown
+    documents.
+Depends:
+    R (>= 3.1.0)
+Imports:
+    xtable
+License: CC0
+LazyData: true
+Suggests:
+    knitr
+VignetteBuilder: knitr
