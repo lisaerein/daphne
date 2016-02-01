@@ -187,8 +187,8 @@ nicelrtable <- function(df,
             final_html[,i] <- as.character(final_html[,i])
         }
         ### create htmlTable
-            htmlver <- htmlTable(x = final_html,
-                                 css.cell='border-collapse: collapse; padding: 4px;',
+            htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
+                                 rnames = final_html[,"Variable"],
                                  col.rgroup=rgroup)
             print(htmlver)
     }
