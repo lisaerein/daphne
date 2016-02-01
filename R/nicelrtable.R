@@ -73,7 +73,7 @@ nicelrtable <- function(df,
     
     tbl <- NULL
     
-    rgroup <- NULL
+    rowlab <- NULL
     
     if (intercept == TRUE){
         tbl <- coef_tbl["(Intercept)",]
@@ -102,6 +102,8 @@ nicelrtable <- function(df,
             
             if (blanks == TRUE) tbl <- rbind(tbl, blank, tmp)
             if (blanks == FALSE) tbl <- rbind(tbl, tmp)
+            
+            rowlab <- c(rowlab,TRUE)
             
         }
         
@@ -141,13 +143,21 @@ nicelrtable <- function(df,
             }
             
             if (blanks == TRUE){
-                if (ref == TRUE) tbl <- rbind(tbl, blank, title, reference, tmp)
-                if (ref == FALSE) tbl <- rbind(tbl, blank, title, tmp)
+                if (ref == TRUE) {
+                    tbl <- rbind(tbl, blank, title, reference, tmp)
+                    rowlab <- c(rowlab,TRUE rep(FALSE, nrow(tmp)+1))
+                }
+                if (ref == FALSE) {
+                    tbl <- rbind(tbl, blank, title, tmp)
+                    rowlab <- c(rowlab,TRUE rep(FALSE, nrow(tmp)))
+                }
             }
             if (blanks == FALSE){
                 if (ref == TRUE) tbl <- rbind(tbl, title, reference, tmp)
                 if (ref == FALSE) tbl <- rbind(tbl, title, tmp)
             }
+            
+            
             
         }   
         
@@ -184,9 +194,24 @@ nicelrtable <- function(df,
         for (i in 1:ncol(final_html)){
             final_html[,i] <- as.character(final_html[,i])
         }
+        ### remove blanks 
+        final_html <- final_html[!is.na(final_html[,2]),]
+        ### get header rows
+        head <- rowlab
+        ### get non-header row
+        nohead <- rowlab == FALSE
+        ### indent non-header rows and remove *
+        final_html[nohead,"Variable"] <- paste("&nbsp; &nbsp; &nbsp;",
+                                               substring(final_html[nohead,"Variable"], 3))
+        ### bold header rows   
+        final_html[head,"Variable"] <- paste("<b>",
+                                             final_html[head,"Variable"],
+                                             "<b/>", sep="")
+        
         ### create htmlTable
             htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
                                  rnames = final_html[,"Variable"],
+                                 css.cell='border-collapse: collapse; padding: 4px;',
                                  col.rgroup=rgroup)
             print(htmlver)
     }
