@@ -155,15 +155,13 @@ nicelrtable <- function(df,
         if (i %% 2 != 0) rgroup <- c(rgroup, rep(color, ngroups)) 
     }
     
-    for (i in 1:length(covs))
-    
     
     tbl <- tbl[,c(ncol(tbl), 2:ncol(tbl)-1)]
     if (overallp == TRUE){
-        names(tbl) <- c("Variable", "Odds Ratio", "95% CI", "Wald p-value", "LR p-value")
+        names(tbl) <- c("Variable", "aOR", "95% CI", "Wald p-value", "LR p-value")
     }
     if (overallp == FALSE){
-        names(tbl) <- c("Variable", "Odds Ratio", "95% CI", "p-value")
+        names(tbl) <- c("Variable", "aOR", "95% CI", "p-value")
     }
     if (printRMD == TRUE){
         
