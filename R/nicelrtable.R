@@ -12,8 +12,12 @@
 #' @param est.dec Number of decimal places for estimates - default is 2.
 #' @param ci.dec Number of decimal places for CI - default is 2.
 #' @param pval.dec Number of decimal places for pvalues - default is 3.
+#' @param htmlTable Whether to use htmlTable package to display table (instead of xtable). Default = FALSE.
+#' @param color Hex color to use for htmlTable output. Default = "#EEEEEE" (grey).
+#' @param printRMD Whether to print resulting table to Rmd via xtable. Default = TRUE.
 #' @keywords table logistic regression glm
 #' @importFrom xtable xtable 
+#' @importFrom htmlTable htmlTable
 #' @export 
 nicelrtable <- function(df, 
                         fit, 
@@ -24,7 +28,10 @@ nicelrtable <- function(df,
                         overallp = TRUE,
                         est.dec = 2,
                         ci.dec = 2,
-                        pval.dec = 3){
+                        pval.dec = 3,
+                        htmlTable = FALSE,
+                        color = "#EEEEEE",
+                        printRMD = TRUE){
     
     ciformat <- paste("%.", ci.dec, "f", sep="")
     
@@ -66,6 +73,8 @@ nicelrtable <- function(df,
     
     tbl <- NULL
     
+    rgroup <- NULL
+    
     if (intercept == TRUE){
         tbl <- coef_tbl["(Intercept)",]
         if (overallp == TRUE) tbl$Overall_pvalue <- NA
@@ -75,6 +84,7 @@ nicelrtable <- function(df,
     for (i in 1:length(covs)){
         
         if (attr(fit$terms, "dataClass")[i+1] == "numeric"){
+            ngroups <- 1 
             tmp <- coef_tbl[grepl(covs[i], rownames(coef_tbl)),]
             if (overallp == TRUE) {
                 op <- drop1(fit, test = "Chisq")[covs[i],"Pr(>Chi)"]
@@ -98,7 +108,9 @@ nicelrtable <- function(df,
         if (attr(fit$terms, "dataClass")[i+1] == "factor" |
                 attr(fit$terms, "dataClass")[i+1] == "character"){
             
-            df[,covs[i]] <- as.factor(df[,covs[i]] )
+            df[,covs[i]] <- as.factor(df[,covs[i]])
+            ngroups <- 1 + nlevels(df[,covs[i]])
+            
             tmp <- coef_tbl[grepl(covs[i], rownames(coef_tbl)),]
             if (overallp == TRUE) tmp$Overall_pvalue <- NA
             title <- data.frame(tmp[1,])
@@ -137,8 +149,13 @@ nicelrtable <- function(df,
                 if (ref == FALSE) tbl <- rbind(tbl, title, tmp)
             }
             
-        }    
+        }   
+        
+        if (i %% 2 == 0) rgroup <- c(rgroup, rep("none", ngroups)) 
+        if (i %% 2 != 0) rgroup <- c(rgroup, rep(color, ngroups)) 
     }
+    
+    for (i in 1:length(covs))
     
     
     tbl <- tbl[,c(ncol(tbl), 2:ncol(tbl)-1)]
@@ -148,14 +165,35 @@ nicelrtable <- function(df,
     if (overallp == FALSE){
         names(tbl) <- c("Variable", "Odds Ratio", "95% CI", "p-value")
     }
+    if (printRMD == TRUE){
+        
+        if (overallp == TRUE){
+            print(xtable(tbl, align="llccrr"), type='html', 
+                  include.rownames=F)
+        }
+        if (overallp == FALSE){
+            print(xtable(tbl, align = "llccr"), type='html', 
+                  include.rownames=F)
+        }
+    }
     
-    if (overallp == TRUE){
-        print(xtable(tbl, align="llccrr"), type='html', 
-              include.rownames=F)
+    
+    if (htmlTable == TRUE){
+        
+        final_html <- tbl
+        
+        ### stop htmlTable from treating everything as a factor
+        for (i in 1:ncol(final_html)){
+            final_html[,i] <- as.character(final_html[,i])
+        }
+        ### create htmlTable
+            htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
+                                 rnames = final_html[,"Variable"],
+                                 css.cell='border-collapse: collapse; padding: 4px;',
+                                 col.rgroup=rgroup)
+            print(htmlver)
     }
-    if (overallp == FALSE){
-        print(xtable(tbl, align = "llccr"), type='html', 
-              include.rownames=F)
-    }
+    
     return(tbl)
+
 }
