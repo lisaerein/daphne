@@ -72,6 +72,7 @@ nicelrtable <- function(df,
     coef_tbl <- coef_tbl[,c("Odds_Ratio", "CI", "p_value")]
     
     tbl <- NULL
+    rgroup <- NULL
     
     # rowlab <- NULL
     
