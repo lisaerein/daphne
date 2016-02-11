@@ -29,7 +29,8 @@ nicegeetable <- function(df,
                         overallp = FALSE,
                         est.dec = 2,
                         ci.dec = 2,
-                        pval.dec = 3){
+                        pval.dec = 3,
+                        colnames = NA){
     library(xtable)
     
     exp <- FALSE
@@ -207,5 +208,9 @@ nicegeetable <- function(df,
         print(xtable(tbl, align = "llccr"), type='html', 
               include.rownames=F)
     }
+    
+    if (!is.na(colnames)){
+        names(tbl) <- colnames
+    } 
     return(tbl)
 }
