@@ -34,6 +34,8 @@ nicegeetable <- function(df,
                         colnames = NA){
     library(xtable)
     
+    df <- data.frame(df)
+    
     exp <- FALSE
     if (family %in% c("binomial", "poisson")){
         exp <- TRUE
