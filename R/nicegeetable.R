@@ -31,7 +31,7 @@ nicegeetable <- function(df,
                         est.dec = 2,
                         ci.dec = 2,
                         pval.dec = 3,
-                        estname = NA){
+                        estcol = NA){
     library(xtable)
   
     df <- data.frame(df)
@@ -197,7 +197,7 @@ nicegeetable <- function(df,
     if (family == "binomial") estname <- "Odds Ratio"
     if (family == "poisson")  estname <- "Rate Ratio"
     if (family == "gaussian") estname <- "Difference"
-    if (!is.na(estname)) estname <- estname
+    if (!is.na(estname)) estname <- estcol
     
     tbl <- tbl[,c(ncol(tbl), 2:ncol(tbl)-1)]
     if (overallp == TRUE){
