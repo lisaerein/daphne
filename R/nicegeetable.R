@@ -215,7 +215,7 @@ nicegeetable <- function(df,
               include.rownames=F)
     }
     
-    if (length(colnames) > 1){
+    if (length(colnames) == ncol(tbl)){
         names(tbl) <- colnames
     } 
     return(tbl)
