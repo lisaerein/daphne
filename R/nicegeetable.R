@@ -33,6 +33,8 @@ nicegeetable <- function(df,
                         pval.dec = 3,
                         colnames = NA){
     library(xtable)
+  
+    df <- data.frame(df)
     
     df <- data.frame(df)
     
@@ -138,6 +140,7 @@ nicegeetable <- function(df,
         if (attr(fit$terms, "dataClass")[i+1] == "factor" |
                 attr(fit$terms, "dataClass")[i+1] == "character"){
             
+            df <- data.frame(df)
             df[,covs[i]] <- as.factor(df[,covs[i]] )
             tmp <- coef_tbl[grepl(covs[i], rownames(coef_tbl)),]
             if (overallp == TRUE) tmp$Overall_pvalue <- NA
@@ -212,7 +215,7 @@ nicegeetable <- function(df,
               include.rownames=F)
     }
     
-    if (!is.na(colnames)){
+    if (length(colnames) > 1){
         names(tbl) <- colnames
     } 
     return(tbl)
