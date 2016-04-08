@@ -13,7 +13,7 @@
 #' @param overallp is whether to do overall Chisq test per variable
 #' @param est.dec Number of decimal places for OR estimates - default is 4.
 #' @param ci.dec Number of decimal places for 95% CI - default is 4.
-#' @param estcol Option to override estimate column name. Default is NA.
+#' @param estname Option to override estimate column name. Default is NA.
 #' @param pval.dec Number of decimal places for pvalues - default is 4.
 #' @keywords pretty table gee logistic regression geeglm geepack 
 #' @importFrom xtable xtable
@@ -31,7 +31,7 @@ nicegeetable <- function(df,
                         est.dec = 2,
                         ci.dec = 2,
                         pval.dec = 3,
-                        estcol = NA){
+                        estname = NA){
     library(xtable)
   
     df <- data.frame(df)
@@ -193,18 +193,18 @@ nicegeetable <- function(df,
         }    
     }
     
-    estname <- "Estimate"
-    if (family == "binomial") estname <- "Odds Ratio"
-    if (family == "poisson")  estname <- "Rate Ratio"
-    if (family == "gaussian") estname <- "Difference"
-    if (!is.na(estname)) estname <- estcol
+    est_name <- "Estimate"
+    if (family == "binomial") est_name <- "Odds Ratio"
+    if (family == "poisson")  est_name <- "Rate Ratio"
+    if (family == "gaussian") est_name <- "Difference"
+    if (!is.na(est_name)) est_name <- estname
     
     tbl <- tbl[,c(ncol(tbl), 2:ncol(tbl)-1)]
     if (overallp == TRUE){
-        names(tbl) <- c("Variable", estname, "95% CI", "Wald p-value", "Chisq p-value")
+        names(tbl) <- c("Variable", est_name, "95% CI", "Wald p-value", "Chisq p-value")
     }
     if (overallp == FALSE){
-        names(tbl) <- c("Variable", estname, "95% CI", "p-value")
+        names(tbl) <- c("Variable", est_name, "95% CI", "p-value")
     }
     
     if (overallp == TRUE){
