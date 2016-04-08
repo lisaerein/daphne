@@ -13,7 +13,7 @@
 #' @param overallp is whether to do overall Chisq test per variable
 #' @param est.dec Number of decimal places for OR estimates - default is 4.
 #' @param ci.dec Number of decimal places for 95% CI - default is 4.
-#' @param estname Option to override estimate column name. Default is NA.
+#' @param estcol Option to override estimate column name. Default is NA.
 #' @param pval.dec Number of decimal places for pvalues - default is 4.
 #' @keywords pretty table gee logistic regression geeglm geepack 
 #' @importFrom xtable xtable
