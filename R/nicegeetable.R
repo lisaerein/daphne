@@ -197,7 +197,7 @@ nicegeetable <- function(df,
     if (family == "binomial") est_name <- "Odds Ratio"
     if (family == "poisson")  est_name <- "Rate Ratio"
     if (family == "gaussian") est_name <- "Difference"
-    if (!is.na(est_name)) est_name <- estname
+    if (!is.na(estname)) est_name <- estname
     
     tbl <- tbl[,c(ncol(tbl), 2:ncol(tbl)-1)]
     if (overallp == TRUE){
