@@ -17,19 +17,34 @@
 #' @importFrom xtable xtable
 #' @export 
 nicelmertable <- function(df, 
-                        fit, 
-                        covs,
-                        intercept = FALSE,
-                        log = FALSE,
-                        ref = FALSE,
-                        labels = NA, 
-                        blanks = FALSE,
-                        overallp = TRUE,
-                        est.dec = 4,
-                        ci.dec = 4,
-                        pval.dec = 3,
-                        printRMD = TRUE){
+                          fit, 
+                          covs,
+                          intercept = FALSE,
+                          log = FALSE,
+                          ref = FALSE,
+                          labels = NA, 
+                          blanks = FALSE,
+                          overallp = TRUE,
+                          est.dec = 4,
+                          ci.dec = 4,
+                          pval.dec = 3,
+                          printRMD = TRUE){
     library(xtable)
+  
+  
+#   df, 
+#   fit, 
+#   covs,
+#   intercept = FALSE
+#   log = FALSE
+#   ref = FALSE
+#   labels = NA
+#   blanks = FALSE
+#   overallp = TRUE
+#   est.dec = 4
+#   ci.dec = 4
+#   pval.dec = 3
+#   printRMD = TRUE
     
     ciformat <- paste("%.", ci.dec, "f", sep="")
     
@@ -78,6 +93,8 @@ nicelmertable <- function(df,
     if (log == FALSE) coef_tbl$CI <- apply(cimat,1,noexpconf)
     
     sformat <- paste("%.", pval.dec, "f", sep="")
+    
+    coef_tbl$p_value <- 2 * (1 - pnorm(abs(coef_tbl$t.value)))
     
     p_value2 <- sprintf(sformat, round(coef_tbl$p_value, pval.dec))
     if (pval.dec == 4) p_value2[coef_tbl$p_value < 0.0001] <- "< 0.0001"
