@@ -17,17 +17,33 @@
 #' @importFrom xtable xtable
 #' @export 
 niceglmerbintable <- function(df, 
-                        fit, 
-                        covs,
-                        intercept = FALSE,
-                        ref = FALSE,
-                        labels = NA, 
-                        blanks = FALSE,
-                        overallp = TRUE,
-                        est.dec = 4,
-                        ci.dec = 4,
-                        pval.dec = 3,
-                        printRMD = TRUE){
+                              fit, 
+                              covs,
+                              intercept = FALSE,
+                              ref = FALSE,
+                              labels = NA, 
+                              blanks = FALSE,
+                              overallp = TRUE,
+                              est.dec = 4,
+                              ci.dec = 4,
+                              pval.dec = 3,
+                              printRMD = TRUE){
+  
+#   df
+#   fit
+#   covs
+#   intercept = FALSE
+#   ref = FALSE
+#   labels = NA
+#   blanks = FALSE
+#   overallp = TRUE
+#   est.dec = 4
+#   ci.dec = 4
+#   pval.dec = 3
+#   printRMD = TRUE
+  
+  
+  
     library(xtable)
     
     ciformat <- paste("%.", ci.dec, "f", sep="")
@@ -82,6 +98,8 @@ niceglmerbintable <- function(df,
         if (overallp == TRUE) tbl$Overall_pvalue <- NA
         tbl$Variable <- "(Intercept)"
     }
+    
+    df <- data.frame(df)
     
     for (i in 1:length(covs)){
         

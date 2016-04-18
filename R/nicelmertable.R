@@ -4,7 +4,7 @@
 #' This function creates a nice looking regression table from a lmer objects
 #' @param df Dataframe. 
 #' @param fit LMER model object.
-#' @param covs Vector of covariate names in model.
+#' @param covs List of covariates in model.
 #' @param intercept If TRUE the intercept will be included in the table. Default is FALSE.
 #' @param ref If TRUE, the reference category gets its own line (left blank). Default is FALSE.
 #' @param labels Covariate labels - default is NA (variable names are used).
@@ -97,6 +97,8 @@ nicelmertable <- function(df,
         if (overallp == TRUE) tbl$Overall_pvalue <- NA
         tbl$Variable <- "(Intercept)"
     }
+    
+    df <- data.frame(df)
     
     for (i in 1:length(covs)){
         
