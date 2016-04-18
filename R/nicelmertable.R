@@ -94,7 +94,7 @@ nicelmertable <- function(df,
     
     sformat <- paste("%.", pval.dec, "f", sep="")
     
-    coef_tbl$p_value <- 2 * (1 - pnorm(abs(coef_tbl$t.value)))
+    coef_tbl$p_value <- 2*(1-pnorm(abs(coef_tbl$t.value)))
     
     p_value2 <- sprintf(sformat, round(coef_tbl$p_value, pval.dec))
     if (pval.dec == 4) p_value2[coef_tbl$p_value < 0.0001] <- "< 0.0001"
