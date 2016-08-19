@@ -6,7 +6,8 @@
 \usage{
 nicegeetable(df, fit, family = "gaussian", id, corstr = "exch",
   intercept = FALSE, ref = FALSE, labels = NA, blanks = FALSE,
-  overallp = FALSE, est.dec = 2, ci.dec = 2, pval.dec = 3)
+  overallp = FALSE, est.dec = 2, ci.dec = 2, pval.dec = 3,
+  estname = NA)
 }
 \arguments{
 \item{df}{Dataframe.}
@@ -33,6 +34,8 @@ Default is FALSE.}
 \item{ci.dec}{Number of decimal places for 95% CI - default is 4.}
 
 \item{pval.dec}{Number of decimal places for pvalues - default is 4.}
+
+\item{estname}{Option to override estimate column name. Default is NA.}
 }
 \description{
 Lisa's GEE Regression Table Function - fit must be geeglm type model
