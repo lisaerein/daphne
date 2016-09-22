@@ -94,12 +94,20 @@ niceglm    <- function( df,
     sformat <- paste("%.", pval.dec, "f", sep="")
     
     p_value2 <- sprintf(sformat, round(coef_tbl$p_value, pval.dec))
-    if (pval.dec == 4) p_value2[coef_tbl$p_value < 0.0001] <- "&lt; 0.0001"
-    if (pval.dec == 3) p_value2[coef_tbl$p_value < 0.001] <- "&lt; 0.001"
-    if (pval.dec == 2) p_value2[coef_tbl$p_value < 0.01] <- "&lt; 0.01"
-    if (pval.dec == 4) p_value2[coef_tbl$p_value > 0.9999] <- "&gt; 0.9999"
-    if (pval.dec == 3) p_value2[coef_tbl$p_value > 0.999] <- "&gt; 0.999"
-    if (pval.dec == 2) p_value2[coef_tbl$p_value > 0.99] <- "&gt; 0.99"
+    if (pval.dec == 4) p_value2[coef_tbl$p_value < 0.0001] <- "< 0.0001"
+    if (pval.dec == 3) p_value2[coef_tbl$p_value < 0.001]  <- "< 0.001"
+    if (pval.dec == 2) p_value2[coef_tbl$p_value < 0.01]   <- "< 0.01"
+    if (pval.dec == 4) p_value2[coef_tbl$p_value > 0.9999] <- "> 0.9999"
+    if (pval.dec == 3) p_value2[coef_tbl$p_value > 0.999]  <- "> 0.999"
+    if (pval.dec == 2) p_value2[coef_tbl$p_value > 0.99]   <- "> 0.99"    
+    if (htmlTable){
+      if (pval.dec == 4) p_value2[coef_tbl$p_value < 0.0001] <- "&lt; 0.0001"
+      if (pval.dec == 3) p_value2[coef_tbl$p_value < 0.001]  <- "&lt; 0.001"
+      if (pval.dec == 2) p_value2[coef_tbl$p_value < 0.01]   <- "&lt; 0.01"
+      if (pval.dec == 4) p_value2[coef_tbl$p_value > 0.9999] <- "&gt; 0.9999"
+      if (pval.dec == 3) p_value2[coef_tbl$p_value > 0.999]  <- "&gt; 0.999"
+      if (pval.dec == 2) p_value2[coef_tbl$p_value > 0.99]   <- "&gt; 0.99"
+    }
     coef_tbl$p_value <- p_value2
     
     covs <- strsplit(as.character(fit$formula), "~")[[3]]
@@ -126,12 +134,20 @@ niceglm    <- function( df,
             if (overallp == TRUE) {
                 op <- drop1(fit, test = "Chisq")[covs[i],"Pr(>Chi)"]
                 op2 <- sprintf(sformat, round(op, pval.dec))
+                if (pval.dec == 4) op2[op < 0.0001] <- "< 0.0001"
+                if (pval.dec == 3) op2[op < 0.001]  <- "< 0.001"
+                if (pval.dec == 2) op2[op < 0.01]   <- "< 0.01"
+                if (pval.dec == 4) op2[op > 0.9999] <- "> 0.9999"
+                if (pval.dec == 3) op2[op > 0.999]  <- "> 0.999"
+                if (pval.dec == 2) op2[op > 0.99]   <- "> 0.99"
+                if (htmlTable){
                 if (pval.dec == 4) op2[op < 0.0001] <- "&lt; 0.0001"
-                if (pval.dec == 3) op2[op < 0.001] <- "&lt; 0.001"
-                if (pval.dec == 2) op2[op < 0.01] <- "&lt; 0.01"
+                if (pval.dec == 3) op2[op < 0.001]  <- "&lt; 0.001"
+                if (pval.dec == 2) op2[op < 0.01]   <- "&lt; 0.01"
                 if (pval.dec == 4) op2[op > 0.9999] <- "&gt; 0.9999"
-                if (pval.dec == 3) op2[op > 0.999] <- "&gt; 0.999"
-                if (pval.dec == 2) op2[op > 0.99] <- "&gt; 0.99"
+                if (pval.dec == 3) op2[op > 0.999]  <- "&gt; 0.999"
+                if (pval.dec == 2) op2[op > 0.99]   <- "&gt; 0.99"
+                }
                 tmp$Overall_pvalue <- op2
             }
             blank <- data.frame(tmp[1,])
@@ -160,12 +176,21 @@ niceglm    <- function( df,
             if (overallp == TRUE) {
                 op <- drop1(fit, test = "Chisq")[covs[i],"Pr(>Chi)"]
                 op2 <- sprintf(sformat, round(op, pval.dec))
+                
+                if (pval.dec == 4) op2[op < 0.0001] <- "< 0.0001"
+                if (pval.dec == 3) op2[op < 0.001]  <- "< 0.001"
+                if (pval.dec == 2) op2[op < 0.01]   <- "< 0.01"
+                if (pval.dec == 4) op2[op > 0.9999] <- "> 0.9999"
+                if (pval.dec == 3) op2[op > 0.999]  <- "> 0.999"
+                if (pval.dec == 2) op2[op > 0.99]   <- "> 0.99"
+                if (htmlTable){
                 if (pval.dec == 4) op2[op < 0.0001] <- "&lt; 0.0001"
-                if (pval.dec == 3) op2[op < 0.001] <- "&lt; 0.001"
-                if (pval.dec == 2) op2[op < 0.01] <- "&lt; 0.01"
+                if (pval.dec == 3) op2[op < 0.001]  <- "&lt; 0.001"
+                if (pval.dec == 2) op2[op < 0.01]   <- "&lt; 0.01"
                 if (pval.dec == 4) op2[op > 0.9999] <- "&gt; 0.9999"
-                if (pval.dec == 3) op2[op > 0.999] <- "&gt; 0.999"
-                if (pval.dec == 2) op2[op > 0.99] <- "&gt; 0.99"
+                if (pval.dec == 3) op2[op > 0.999]  <- "&gt; 0.999"
+                if (pval.dec == 2) op2[op > 0.99]   <- "&gt; 0.99"
+                }
                 title$Overall_pvalue <- op2
             }
             if (is.na(labels[1])) title$Variable <- covs[i]
