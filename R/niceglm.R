@@ -2,7 +2,7 @@
 #' Lisa's GLM Regression Table Function 
 #'
 #' This function creates a nice looking regression table from a glm object. Estimates are presented in a 'nice' way
-#' (coefficients and CI's are exponentiated for logit, poisson, or if specified).
+#' (coefficients and CI's are exponentiated for logit and poisson by default, or if exp = TRUE).
 #' @param df Dataframe. 
 #' @param fit GLM model object.
 #' @param family Model family in quotes ("guassian", "binomial", "poisson"). 
