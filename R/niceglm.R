@@ -287,6 +287,7 @@ niceglm    <- function( df,
         ### create htmlTable
             htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
                                  rnames = final_html[,"Variable"],
+                                 rowlabel = paste("N =", nobs(myfit)),
                                  css.cell='border-collapse: collapse; padding: 4px;',
                                  col.rgroup=rgroup)
             print(htmlver)
