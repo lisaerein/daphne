@@ -20,6 +20,7 @@
 #' @param exp Option to exponentiate coefficients and CI's. Default is NA (exp for logistic and poisson families only).
 #' @keywords nicetable mixed effects regression glmer lmer  
 #' @importFrom xtable xtable
+#' @importFrom htmlTable htmlTable
 #' @export 
 niceglmer <- function(df, 
                       fit, 
