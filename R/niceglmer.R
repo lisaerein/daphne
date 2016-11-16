@@ -4,8 +4,10 @@
 #' This function creates a nice looking regression table from a glmer object 
 #' @param df Dataframe. 
 #' @param fit GLMER binomial model object.
-#' @param family Model family in quotes ("guassian", "binomial", "poisson"). 
 #' @param covs Vector of covariate names in model.
+#' @param family Model family in quotes ("guassian", "binomial", "poisson").
+#' @param exp Option to exponentiate coefficients and CI's. Default is NA (exp for logistic and poisson families only).
+#' @param estname Option to override estimate column name. Default is NA.
 #' @param intercept If TRUE the intercept will be included in the table. Default is FALSE.
 #' @param ref If TRUE, the reference category gets its own line (left blank). Default is FALSE.
 #' @param labels Covariate labels - default is NA (variable names are used).
@@ -14,10 +16,9 @@
 #' @param est.dec Number of decimal places for estimates - default is 2.
 #' @param ci.dec Number of decimal places for CI - default is 2.
 #' @param pval.dec Number of decimal places for pvalues - default is 3.
-#' @param estname Option to override estimate column name. Default is NA.
 #' @param htmlTable Whether to use htmlTable package to display table (instead of xtable). Default = FALSE.
 #' @param color Hex color to use for htmlTable output. Default = "#EEEEEE" (grey).
-#' @param exp Option to exponentiate coefficients and CI's. Default is NA (exp for logistic and poisson families only).
+#' @param printRMD Whether to print resulting table to Rmd via xtable. Default = TRUE.
 #' @keywords nicetable mixed effects regression glmer lmer  
 #' @importFrom xtable xtable
 #' @importFrom htmlTable htmlTable
