@@ -9,11 +9,11 @@ Description: This package creates nice looking regression tables. There are
 Depends:
     R (>= 3.1.0)
 Imports:
-    xtable
-    htmlTable
+    xtable htmlTable
 License: CC0
 LazyData: true
 Suggests:
     knitr htmlTable
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
+

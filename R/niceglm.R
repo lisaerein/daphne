@@ -19,7 +19,7 @@
 #' @param htmlTable Whether to use htmlTable package to display table (instead of xtable). Default = FALSE.
 #' @param color Hex color to use for htmlTable output. Default = "#EEEEEE" (grey).
 #' @param printRMD Whether to print resulting table to Rmd via xtable. Default = TRUE.
-#' @keywords nicetable regression glm 
+#' @keywords table logistic regression glm
 #' @importFrom xtable xtable 
 #' @importFrom htmlTable htmlTable
 #' @export 
@@ -80,7 +80,6 @@ niceglm    <- function( df,
     esformat <- paste("%.", est.dec, "f", sep="")
     
     coef_tbl <- data.frame(summary(fit)$coef)
-    
     if (exp)          coef_tbl$Estimate <- exp(summary(fit)$coef[,"Estimate"])
     if (exp == FALSE) coef_tbl$Estimate <-    (summary(fit)$coef[,"Estimate"])
     coef_tbl$Estimate <- sprintf(esformat, round(coef_tbl$Estimate, est.dec))
