@@ -136,7 +136,6 @@ niceglmer <- function(df,
   
   tbl <- NULL
   rgroup <- NULL
-  
   rowlab <- NULL
   
   if (intercept == TRUE){
@@ -150,27 +149,46 @@ niceglmer <- function(df,
   for (i in 1:length(covs)){
     
     if (class(df[,covs[i]]) == "numeric"){
+      ngroups <- 1 
       tmp <- coef_tbl[grepl(covs[i], rownames(coef_tbl)),]
       if (overallp == TRUE) {
         op <- drop1(fit, test = "Chisq")[covs[i],"Pr(>Chi)"]
         op2 <- sprintf(sformat, round(op, pval.dec))
         if (pval.dec == 4) op2[op < 0.0001] <- "< 0.0001"
-        if (pval.dec == 3) op2[op < 0.001] <- "< 0.001"
-        if (pval.dec == 2) op2[op < 0.01] <- "< 0.01"
+        if (pval.dec == 3) op2[op < 0.001]  <- "< 0.001"
+        if (pval.dec == 2) op2[op < 0.01]   <- "< 0.01"
+        if (pval.dec == 4) op2[op > 0.9999] <- "> 0.9999"
+        if (pval.dec == 3) op2[op > 0.999]  <- "> 0.999"
+        if (pval.dec == 2) op2[op > 0.99]   <- "> 0.99"
+        if (htmlTable){
+          if (pval.dec == 4) op2[op < 0.0001] <- "&lt; 0.0001"
+          if (pval.dec == 3) op2[op < 0.001]  <- "&lt; 0.001"
+          if (pval.dec == 2) op2[op < 0.01]   <- "&lt; 0.01"
+          if (pval.dec == 4) op2[op > 0.9999] <- "&gt; 0.9999"
+          if (pval.dec == 3) op2[op > 0.999]  <- "&gt; 0.999"
+          if (pval.dec == 2) op2[op > 0.99]   <- "&gt; 0.99"
+        }
         tmp$Overall_pvalue <- op2
       }
+      blank <- data.frame(tmp[1,])
+      blank <- NA
+      
       if (is.na(labels[1])) tmp$Variable <- covs[i]
       if (!is.na(labels[1])) tmp$Variable <- labels[i]
       
       if (blanks == TRUE) tbl <- rbind(tbl, blank, tmp)
       if (blanks == FALSE) tbl <- rbind(tbl, tmp)
       
+      rowlab <- c(rowlab, TRUE, rep(FALSE, (nrow(tmp)-1)))
+      
     }
     
-    if (class(df[,covs[i]])  == "factor" | 
+    if (class(df[,covs[i]]) == "factor" |
         class(df[,covs[i]]) == "character"){
       
-      df[,covs[i]] <- as.factor(df[,covs[i]] )
+      df[,covs[i]] <- as.factor(df[,covs[i]])
+      ngroups <- nlevels(df[,covs[i]])
+      
       tmp <- coef_tbl[grepl(covs[i], rownames(coef_tbl)),]
       if (overallp == TRUE) tmp$Overall_pvalue <- NA
       title <- data.frame(tmp[1,])
@@ -178,9 +196,21 @@ niceglmer <- function(df,
       if (overallp == TRUE) {
         op <- drop1(fit, test = "Chisq")[covs[i],"Pr(>Chi)"]
         op2 <- sprintf(sformat, round(op, pval.dec))
+        
         if (pval.dec == 4) op2[op < 0.0001] <- "< 0.0001"
-        if (pval.dec == 3) op2[op < 0.001] <- "< 0.001"
-        if (pval.dec == 2) op2[op < 0.01] <- "< 0.01"
+        if (pval.dec == 3) op2[op < 0.001]  <- "< 0.001"
+        if (pval.dec == 2) op2[op < 0.01]   <- "< 0.01"
+        if (pval.dec == 4) op2[op > 0.9999] <- "> 0.9999"
+        if (pval.dec == 3) op2[op > 0.999]  <- "> 0.999"
+        if (pval.dec == 2) op2[op > 0.99]   <- "> 0.99"
+        if (htmlTable){
+          if (pval.dec == 4) op2[op < 0.0001] <- "&lt; 0.0001"
+          if (pval.dec == 3) op2[op < 0.001]  <- "&lt; 0.001"
+          if (pval.dec == 2) op2[op < 0.01]   <- "&lt; 0.01"
+          if (pval.dec == 4) op2[op > 0.9999] <- "&gt; 0.9999"
+          if (pval.dec == 3) op2[op > 0.999]  <- "&gt; 0.999"
+          if (pval.dec == 2) op2[op > 0.99]   <- "&gt; 0.99"
+        }
         title$Overall_pvalue <- op2
       }
       if (is.na(labels[1])) title$Variable <- covs[i]
@@ -201,15 +231,26 @@ niceglmer <- function(df,
       }
       
       if (blanks == TRUE){
-        if (ref == TRUE) tbl <- rbind(tbl, blank, title, reference, tmp)
-        if (ref == FALSE) tbl <- rbind(tbl, blank, title, tmp)
+        if (ref == TRUE) {
+          tbl <- rbind(tbl, blank, title, reference, tmp)
+          # rowlab <- c(rowlab,TRUE rep(FALSE, nrow(tmp)+1))
+        }
+        if (ref == FALSE) {
+          tbl <- rbind(tbl, blank, title, tmp)
+          # rowlab <- c(rowlab,TRUE rep(FALSE, nrow(tmp)))
+        }
       }
       if (blanks == FALSE){
         if (ref == TRUE) tbl <- rbind(tbl, title, reference, tmp)
         if (ref == FALSE) tbl <- rbind(tbl, title, tmp)
       }
       
-    }    
+      rowlab <- c(rowlab, TRUE, rep(FALSE, (nrow(tmp)-1)))
+      
+    }   
+    
+    if (i %% 2 == 0) rgroup <- c(rgroup, rep("none", ngroups)) 
+    if (i %% 2 != 0) rgroup <- c(rgroup, rep(color, ngroups)) 
   }
   
   
