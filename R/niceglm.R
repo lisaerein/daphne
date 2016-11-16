@@ -19,7 +19,7 @@
 #' @param htmlTable Whether to use htmlTable package to display table (instead of xtable). Default = FALSE.
 #' @param color Hex color to use for htmlTable output. Default = "#EEEEEE" (grey).
 #' @param printRMD Whether to print resulting table to Rmd via xtable. Default = TRUE.
-#' @keywords table logistic regression glm
+#' @keywords nicetable regression glm 
 #' @importFrom xtable xtable 
 #' @importFrom htmlTable htmlTable
 #' @export 

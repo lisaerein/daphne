@@ -18,7 +18,7 @@
 #' @param htmlTable Whether to use htmlTable package to display table (instead of xtable). Default = FALSE.
 #' @param color Hex color to use for htmlTable output. Default = "#EEEEEE" (grey).
 #' @param exp Option to exponentiate coefficients and CI's. Default is NA (exp for logistic and poisson families only).
-#' @keywords table mixed effects logistic regression glmer   
+#' @keywords nicetable mixed effects regression glmer lmer  
 #' @importFrom xtable xtable
 #' @export 
 niceglmer <- function(df, 
