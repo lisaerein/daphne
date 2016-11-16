@@ -10,9 +10,10 @@ Depends:
     R (>= 3.1.0)
 Imports:
     xtable
+    htmlTable
 License: CC0
 LazyData: true
 Suggests:
-    knitr
+    knitr htmlTable
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1

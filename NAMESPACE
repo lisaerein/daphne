@@ -3,6 +3,7 @@
 export(niceclogit)
 export(nicegeetable)
 export(niceglm)
+export(niceglmer)
 export(niceglmerbintable)
 export(niceglmerpoistable)
 export(nicelinregtable)
