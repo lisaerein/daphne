@@ -80,6 +80,7 @@ niceglm    <- function( df,
     esformat <- paste("%.", est.dec, "f", sep="")
     
     coef_tbl <- data.frame(summary(fit)$coef)
+    
     if (exp)          coef_tbl$Estimate <- exp(summary(fit)$coef[,"Estimate"])
     if (exp == FALSE) coef_tbl$Estimate <-    (summary(fit)$coef[,"Estimate"])
     coef_tbl$Estimate <- sprintf(esformat, round(coef_tbl$Estimate, est.dec))
