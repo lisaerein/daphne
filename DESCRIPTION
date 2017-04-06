@@ -1,13 +1,13 @@
 Package: daphne
 Title: This package creates nice looking regression tables.
-Version: 0.1
+Version: 1.1
 Authors@R: "Lisa Rein <lisaerein@gmail.com> [aut, cre]"
 Description: This package creates nice looking regression tables. There are
-    several functions for different types of models. Each function returns a
-    dataframe and also prints an html table by default for use in R markdown
-    documents.
+    separate functions for different types of models (glm, gee, glmer, nb, olr, clogit). 
+    Each function returns a  dataframe and also prints an html table by default 
+    for use in R markdown documents.
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.3.0)
 Imports:
     xtable,
     htmlTable

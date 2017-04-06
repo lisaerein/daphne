@@ -1,9 +1,9 @@
 
-#' Lisa's Logistic Regression Table Function 
+#' Lisa's Negative Binomial Regression Table Function 
 #'
-#' This function creates a nice looking regression table from a glm object. Estimates are presented as OR's (coefficients and CI's are exponentiated).
+#' This function creates a nice looking regression table from a glm.nb object
 #' @param df Dataframe. 
-#' @param fit Binomial GLM model object.
+#' @param fit glm.nb model object.
 #' @param intercept If TRUE the intercept will be included in the table. Default is FALSE.
 #' @param ref If TRUE, the reference category gets its own line (left blank). Default is FALSE.
 #' @param labels Covariate labels - default is NA (variable names are used).
@@ -12,26 +12,19 @@
 #' @param est.dec Number of decimal places for estimates - default is 2.
 #' @param ci.dec Number of decimal places for CI - default is 2.
 #' @param pval.dec Number of decimal places for pvalues - default is 3.
-#' @param htmlTable Whether to use htmlTable package to display table (instead of xtable). Default = FALSE.
-#' @param color Hex color to use for htmlTable output. Default = "#EEEEEE" (grey).
-#' @param printRMD Whether to print resulting table to Rmd via xtable. Default = TRUE.
-#' @keywords table logistic regression glm
-#' @importFrom xtable xtable 
-#' @importFrom htmlTable htmlTable
+#' @keywords table negative binomial regression glm.nb  
+#' @importFrom xtable xtable
 #' @export 
-nicelrtable <- function(df, 
-                        fit, 
-                        intercept = FALSE,
-                        ref = FALSE,
-                        labels = NA, 
-                        blanks = FALSE,
-                        overallp = TRUE,
-                        est.dec = 2,
-                        ci.dec = 2,
-                        pval.dec = 3,
-                        htmlTable = FALSE,
-                        color = "#EEEEEE",
-                        printRMD = TRUE){
+nicenb <- function(df, 
+                   fit, 
+                   intercept = FALSE,
+                   ref = FALSE,
+                   labels = NA, 
+                   blanks = FALSE,
+                   overallp = TRUE,
+                   est.dec = 2,
+                   ci.dec = 2,
+                   pval.dec = 3){
     
     ciformat <- paste("%.", ci.dec, "f", sep="")
     
@@ -51,10 +44,22 @@ nicelrtable <- function(df,
     coef_tbl$Estimate <- exp(summary(fit)$coef[,"Estimate"])
     coef_tbl$Estimate <- sprintf(esformat, round(coef_tbl$Estimate, est.dec))
     
-    names(coef_tbl)[grepl("Est", names(coef_tbl))] <- "Odds_Ratio"
+    names(coef_tbl)[grepl("Est", names(coef_tbl))] <- "R_R"
     names(coef_tbl)[grepl("Pr", names(coef_tbl))] <- "p_value"
     
-    cimat <- data.frame(confint(fit))
+    t <- try(data.frame(confint(fit)))
+    
+    if (class(t) == "data.frame"){
+        cimat <- t
+    }
+    
+    if (class(t) != "data.frame"){
+        c <- data.frame(summary(fit)$coef)
+        cimat <- matrix(data=NA, ncol=2, nrow=nrow(c))
+        cimat[,1] <- c[,"Estimate"] - (qnorm(0.975)*c[,"Std..Error"])
+        cimat[,2] <- c[,"Estimate"] + (qnorm(0.975)*c[,"Std..Error"])
+        cimat <- data.frame(cimat)
+    }
     
     coef_tbl$CI <- apply(cimat,1,expconf)
     
@@ -66,15 +71,13 @@ nicelrtable <- function(df,
     if (pval.dec == 2) p_value2[coef_tbl$p_value < 0.01] <- "< 0.01"
     coef_tbl$p_value <- p_value2
     
-    covs <- strsplit(as.character(fit$formula), "~")[[3]]
-    covs <- trim(unlist(strsplit(covs, "+", fixed=T)))
+    covs <- attr(fit$terms, "dataClasses")
+    covs <- names(covs)[2:length(covs)]
+    covs <- covs[grepl("offset", covs) == FALSE]
     
-    coef_tbl <- coef_tbl[,c("Odds_Ratio", "CI", "p_value")]
+    coef_tbl <- coef_tbl[,c("R_R", "CI", "p_value")]
     
     tbl <- NULL
-    rgroup <- NULL
-    
-    # rowlab <- NULL
     
     if (intercept == TRUE){
         tbl <- coef_tbl["(Intercept)",]
@@ -85,7 +88,6 @@ nicelrtable <- function(df,
     for (i in 1:length(covs)){
         
         if (attr(fit$terms, "dataClass")[i+1] == "numeric"){
-            ngroups <- 1 
             tmp <- coef_tbl[grepl(covs[i], rownames(coef_tbl)),]
             if (overallp == TRUE) {
                 op <- drop1(fit, test = "Chisq")[covs[i],"Pr(>Chi)"]
@@ -95,25 +97,18 @@ nicelrtable <- function(df,
                 if (pval.dec == 2) op2[op < 0.01] <- "< 0.01"
                 tmp$Overall_pvalue <- op2
             }
-            blank <- data.frame(tmp[1,])
-            blank <- NA
-            
             if (is.na(labels[1])) tmp$Variable <- covs[i]
             if (!is.na(labels[1])) tmp$Variable <- labels[i]
             
             if (blanks == TRUE) tbl <- rbind(tbl, blank, tmp)
             if (blanks == FALSE) tbl <- rbind(tbl, tmp)
             
-            # rowlab <- c(rowlab,TRUE rep(FALSE, nrow(tmp)))
-            
         }
         
         if (attr(fit$terms, "dataClass")[i+1] == "factor" |
                 attr(fit$terms, "dataClass")[i+1] == "character"){
             
-            df[,covs[i]] <- as.factor(df[,covs[i]])
-            ngroups <- nlevels(df[,covs[i]])
-            
+            df[,covs[i]] <- as.factor(df[,covs[i]] )
             tmp <- coef_tbl[grepl(covs[i], rownames(coef_tbl)),]
             if (overallp == TRUE) tmp$Overall_pvalue <- NA
             title <- data.frame(tmp[1,])
@@ -144,79 +139,32 @@ nicelrtable <- function(df,
             }
             
             if (blanks == TRUE){
-                if (ref == TRUE) {
-                    tbl <- rbind(tbl, blank, title, reference, tmp)
-                    # rowlab <- c(rowlab,TRUE rep(FALSE, nrow(tmp)+1))
-                }
-                if (ref == FALSE) {
-                    tbl <- rbind(tbl, blank, title, tmp)
-                    # rowlab <- c(rowlab,TRUE rep(FALSE, nrow(tmp)))
-                }
+                if (ref == TRUE) tbl <- rbind(tbl, blank, title, reference, tmp)
+                if (ref == FALSE) tbl <- rbind(tbl, blank, title, tmp)
             }
             if (blanks == FALSE){
                 if (ref == TRUE) tbl <- rbind(tbl, title, reference, tmp)
                 if (ref == FALSE) tbl <- rbind(tbl, title, tmp)
             }
             
-            
-            
-        }   
-        
-        if (i %% 2 == 0) rgroup <- c(rgroup, rep("none", ngroups)) 
-        if (i %% 2 != 0) rgroup <- c(rgroup, rep(color, ngroups)) 
+        }    
     }
-    
     
     tbl <- tbl[,c(ncol(tbl), 2:ncol(tbl)-1)]
     if (overallp == TRUE){
-        names(tbl) <- c("Variable", "Odds Ratio", "95% CI", "Wald p-value", "LR p-value")
+        names(tbl) <- c("Variable", "Risk Ratio", "95% CI", "Wald p-value", "LR p-value")
     }
     if (overallp == FALSE){
-        names(tbl) <- c("Variable", "Odds Ratio", "95% CI", "p-value")
-    }
-    if (printRMD == TRUE){
-        
-        if (overallp == TRUE){
-            print(xtable(tbl, align="llccrr"), type='html', 
-                  include.rownames=F)
-        }
-        if (overallp == FALSE){
-            print(xtable(tbl, align = "llccr"), type='html', 
-                  include.rownames=F)
-        }
+        names(tbl) <- c("Variable", "Risk Ratio", "95% CI", "p-value")
     }
     
-    
-    if (htmlTable == TRUE){
-        
-        final_html <- tbl
-        
-        ### stop htmlTable from treating everything as a factor
-        for (i in 1:ncol(final_html)){
-            final_html[,i] <- as.character(final_html[,i])
-        }
-#         ### remove blanks 
-#         final_html <- final_html[!is.na(final_html[,2]),]
-#         ### get header rows
-#         head <- rowlab
-#         ### get non-header row
-#         nohead <- rowlab == FALSE
-#         ### indent non-header rows and remove *
-#         final_html[nohead,"Variable"] <- paste("&nbsp; &nbsp; &nbsp;",
-#                                                substring(final_html[nohead,"Variable"], 3))
-#         ### bold header rows   
-#         final_html[head,"Variable"] <- paste("<b>",
-#                                              final_html[head,"Variable"],
-#                                              "<b/>", sep="")
-        
-        ### create htmlTable
-            htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
-                                 rnames = final_html[,"Variable"],
-                                 css.cell='border-collapse: collapse; padding: 4px;',
-                                 col.rgroup=rgroup)
-            print(htmlver)
+    if (overallp == TRUE){
+        print(xtable(tbl, align="llccrr"), type='html', 
+              include.rownames=F)
     }
-    
+    if (overallp == FALSE){
+        print(xtable(tbl, align = "llccr"), type='html', 
+              include.rownames=F)
+    }
     return(tbl)
-
 }

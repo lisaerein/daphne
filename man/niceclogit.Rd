@@ -38,6 +38,7 @@ niceclogit(df, fit, intercept = FALSE, ref = FALSE, labels = NA,
 \description{
 This function creates a nice looking regression table from a clogit object. Estimates are presented as OR's (coefficients and CI's are exponentiated).
 }
+\keyword{conditional}
 \keyword{glm}
 \keyword{logistic}
 \keyword{regression}

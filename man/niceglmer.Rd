@@ -41,16 +41,14 @@ niceglmer(df, fit, covs, family = "gaussian", exp = NA, estname = NA,
 \item{htmlTable}{Whether to use htmlTable package to display table (instead of xtable). Default = FALSE.}
 
 \item{color}{Hex color to use for htmlTable output. Default = "#EEEEEE" (grey).}
-
-\item{printRMD}{Whether to print resulting table to Rmd via xtable. Default = TRUE.}
 }
 \description{
-This function creates a nice looking regression table from a glmer object
+This function creates a nice looking regression table from a lmer/glmer object
 }
 \keyword{effects}
 \keyword{glmer}
-\keyword{lmer}
+\keyword{logistic}
 \keyword{mixed}
-\keyword{nicetable}
 \keyword{regression}
+\keyword{table}
 

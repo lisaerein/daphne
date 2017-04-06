@@ -4,49 +4,55 @@
 \alias{niceglm}
 \title{Lisa's GLM Regression Table Function}
 \usage{
-niceglm(df, fit, family = "gaussian", exp = NA, estname = NA,
-  intercept = FALSE, ref = FALSE, labels = NA, blanks = FALSE,
-  overallp = FALSE, est.dec = 2, ci.dec = 2, pval.dec = 3,
-  htmlTable = FALSE, color = "#EEEEEE", printRMD = TRUE)
+niceglm(df, fit = NA, family = NA, covs = NA, out = NA,
+  regtype = "multi", exp = NA, estname = NA, intercept = FALSE,
+  labels = NA, overallp = FALSE, est.dec = 2, ci.dec = 2,
+  pval.dec = 3, color = "#EEEEEE", printRMD = FALSE, htmlTable = TRUE)
 }
 \arguments{
-\item{df}{Dataframe.}
+\item{df}{Dataframe [REQUIRED].}
 
-\item{fit}{GLM model object.}
+\item{fit}{GLM model object [fit or family/covs/out are REQUIRED].}
 
-\item{family}{Model family in quotes ("guassian", "binomial", "poisson").}
+\item{family}{Model family name in quotes ("guassian", "binomial", "poisson") [fit or family/covs/out are REQUIRED].}
 
-\item{exp}{Option to exponentiate coefficients and CI's. Default is NA (exp for logistic and poisson families only).}
+\item{covs}{Vector of covariates to include in model [fit or family/covs/out are REQUIRED].}
 
-\item{estname}{Option to override estimate column name. Default is NA.}
+\item{out}{Outcome for regression model [fit or family/covs/out are REQUIRED].}
+
+\item{regtype}{Should the covariates be run separately ("uni") or together in a multiple regression model ("multi") [REQUIRED if no fit].}
+
+\item{exp}{Option to exponentiate coefficients and CI's. Default is NA (estimates are only exponentiated for binomial and poisson family models by default).}
+
+\item{estname}{Option to override default estimate column name. Default is NA.}
 
 \item{intercept}{If TRUE the intercept will be included in the table. Default is FALSE.}
 
-\item{ref}{If TRUE, the reference category gets its own line (left blank). Default is FALSE.}
-
-\item{labels}{Covariate labels - default is NA (variable names are used).}
-
-\item{blanks}{If TRUE, blank lines will be inserted separating covariates - default is FALSE.}
-
 \item{overallp}{If TRUE, a likelihood ratio test pvalue (using drop1 Chisq tests) will be calculated for each variable. Default is TRUE.}
 
-\item{est.dec}{Number of decimal places for estimates - default is 2.}
+\item{est.dec}{Number of decimal places for estimates. Default is 2.}
 
-\item{ci.dec}{Number of decimal places for CI - default is 2.}
+\item{ci.dec}{Number of decimal places for 95% confidence interval. Default is 2.}
 
-\item{pval.dec}{Number of decimal places for pvalues - default is 3.}
+\item{pval.dec}{Number of decimal places for pvalues. Default is 3.}
 
-\item{htmlTable}{Whether to use htmlTable package to display table (instead of xtable). Default = FALSE.}
+\item{color}{Hex color to use for htmlTable output. Default is "#EEEEEE" (grey).}
 
-\item{color}{Hex color to use for htmlTable output. Default = "#EEEEEE" (grey).}
+\item{printRMD}{Whether to print resulting table to Rmd via xtable. Default is FALSE}
 
-\item{printRMD}{Whether to print resulting table to Rmd via xtable. Default = TRUE.}
+\item{htmlTable}{Whether to use htmlTable package to display table (instead of xtable). Default is TRUE}
 }
 \description{
-This function creates a nice looking regression table from a glm object. Estimates are presented in a 'nice' way
-(coefficients and CI's are exponentiated for logit and poisson by default, or if exp = TRUE).
+This function creates a nice looking regression table for a glm model. 
+Input either a glm object or outcome variable, vector of covariates, model family, and type of analysis (bivariate or multiple regression). 
+The function returns a dataframe with regression coefficients. 
+By default a table is also printed via htmlTable - handy for R markdown html reports.
 }
+\keyword{coefficients}
 \keyword{glm}
-\keyword{nicetable}
+\keyword{linear}
+\keyword{logistic}
+\keyword{poisson}
 \keyword{regression}
+\keyword{table}
 

@@ -18,7 +18,7 @@
 #' @keywords pretty table gee logistic regression geeglm geepack 
 #' @importFrom xtable xtable
 #' @export 
-nicegeetable <- function(df, 
+nicegee <- function(df, 
                         fit, 
                         family = "gaussian",
                         id,

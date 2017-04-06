@@ -1,13 +1,9 @@
 
-#' Lisa's Poisson Regression Table Function 
+#' Lisa's Ordinal Logistic Regression Table Function
 #'
-#' This function re-formats the summary table from Poisson glm models 
-#' to look nicer. Estimates and CI's are transformed to rate ratios.
-#' Likelihood ratio p-values are added to the table for each covariate (optional).
-#' The function returns a data frame and prints an html version 
-#' for R markdown documents. 
+#' This function creates a nice looking regression table for polr objects
 #' @param df Dataframe. 
-#' @param fit GLM model object (family = "poisson").
+#' @param fit polr model object.
 #' @param intercept If TRUE the intercept will be included in the table. Default is FALSE.
 #' @param ref If TRUE, the reference category gets its own line (left blank). Default is FALSE.
 #' @param labels Covariate labels - default is NA (variable names are used).
@@ -16,20 +12,18 @@
 #' @param est.dec Number of decimal places for estimates - default is 2.
 #' @param ci.dec Number of decimal places for CI - default is 2.
 #' @param pval.dec Number of decimal places for pvalues - default is 3.
-#' @keywords poisson regression table glm
-#' @importFrom xtable xtable 
+#' @keywords table ordinal logistic regression polr  
+#' @importFrom xtable xtable
 #' @export 
-nicepoistable <- function(df, 
-                        fit, 
-                        intercept = FALSE,
-                        ref = FALSE,
-                        labels = NA, 
-                        blanks = FALSE,
-                        overallp = TRUE,
-                        est.dec = 2,
-                        ci.dec = 2,
-                        pval.dec = 3){
-    library(xtable)
+nicepolr <- function(df, 
+                     fit, 
+                     ref = FALSE,
+                     labels = NA, 
+                     blanks = FALSE,
+                     overallp = TRUE,
+                     est.dec = 2,
+                     ci.dec = 2,
+                     pval.dec = 3){
     
     ciformat <- paste("%.", ci.dec, "f", sep="")
     
@@ -45,29 +39,34 @@ nicepoistable <- function(df,
     
     esformat <- paste("%.", est.dec, "f", sep="")
     
-    coef_tbl <- data.frame(summary(fit)$coef)
-    coef_tbl$Estimate <- exp(summary(fit)$coef[,"Estimate"])
+    coef_tbl <- data.frame(coef(summary(fit)))
+    coef_tbl$p_value <- pnorm(abs(coef_tbl[, "t.value"]), lower.tail = FALSE) * 2
+    
+    coef_tbl$Estimate <- exp(summary(fit)$coef[,"Value"])
     coef_tbl$Estimate <- sprintf(esformat, round(coef_tbl$Estimate, est.dec))
     
-    names(coef_tbl)[grepl("Est", names(coef_tbl))] <- "R_R"
-    names(coef_tbl)[grepl("Pr", names(coef_tbl))] <- "p_value"
+    names(coef_tbl)[grepl("Est", names(coef_tbl))] <- "Odds_Ratio"
     
-    t <- try(data.frame(confint(fit)))
+    covs <- names(attr(fit$terms, "data"))
+    covs <- covs[2:length(covs)]
     
-    if (class(t) == "data.frame"){
-        cimat <- t
+    nrow <- length(covs)*sum(grepl(covs, row.names(coef_tbl)))
+    
+    if (nrow > 1){
+        cimat <- (data.frame(confint(fit)))
+        CI <- apply(cimat,1,expconf)
+        coef_tbl <- merge(coef_tbl, CI, all= FALSE, by = 0) 
+        names(coef_tbl)[ncol(coef_tbl)] <- "CI"
+        rownames(coef_tbl) <- coef_tbl[,"Row.names"]
     }
     
-    if (class(t) != "data.frame"){
-        c <- data.frame(summary(fit)$coef)
-        cimat <- matrix(data=NA, ncol=2, nrow=nrow(c))
-        cimat[,1] <- c[,"Estimate"] - (qnorm(0.975)*c[,"Std..Error"])
-        cimat[,2] <- c[,"Estimate"] + (qnorm(0.975)*c[,"Std..Error"])
-        cimat <- data.frame(cimat)
+    if (nrow == 1){
+        cimat <- t(data.frame(confint(fit)))
+        CI <-  apply(cimat,1,expconf)
+        coef_tbl <- coef_tbl[grepl(covs, row.names(coef_tbl)),]
+        coef_tbl$CI <- CI        
     }
-    
-    coef_tbl$CI <- apply(cimat,1,expconf)
-    
+ 
     sformat <- paste("%.", pval.dec, "f", sep="")
     
     p_value2 <- sprintf(sformat, round(coef_tbl$p_value, pval.dec))
@@ -75,27 +74,10 @@ nicepoistable <- function(df,
     if (pval.dec == 3) p_value2[coef_tbl$p_value < 0.001] <- "< 0.001"
     if (pval.dec == 2) p_value2[coef_tbl$p_value < 0.01] <- "< 0.01"
     coef_tbl$p_value <- p_value2
-    
-    if (class(fit) != "glmerMod"){
-        covs <- strsplit(as.character(fit$formula), "~")[[3]]
-        covs <- trim(unlist(strsplit(covs, "+", fixed=T)))
-    }
-    
-    if (class(fit) == "glmerMod"){
-        covs <- strsplit(as.character(summary(fit)$call["formula"]), "~")[[1]][[2]]
-        covs <- trim(unlist(strsplit(covs, "+", fixed=T)))
-        covs <- covs[1:length(covs)-1]
-    }
-    
-    coef_tbl <- coef_tbl[,c("R_R", "CI", "p_value")]
+
+    coef_tbl <- coef_tbl[,c("Odds_Ratio", "CI", "p_value")]
     
     tbl <- NULL
-    
-    if (intercept == TRUE){
-        tbl <- coef_tbl["(Intercept)",]
-        if (overallp == TRUE) tbl$Overall_pvalue <- NA
-        tbl$Variable <- "(Intercept)"
-    }
     
     for (i in 1:length(covs)){
         
@@ -115,8 +97,12 @@ nicepoistable <- function(df,
             if (is.na(labels[1])) tmp$Variable <- covs[i]
             if (!is.na(labels[1])) tmp$Variable <- labels[i]
             
-            if (blanks == TRUE) tbl <- rbind(tbl, blank, tmp)
-            if (blanks == FALSE) tbl <- rbind(tbl, tmp)
+            if (blanks == TRUE){
+                tbl <- rbind(tbl, blank, tmp)
+            }
+            if (blanks == FALSE){
+                tbl <- rbind(tbl, tmp)
+            }
             
         }
         
@@ -168,10 +154,10 @@ nicepoistable <- function(df,
     
     tbl <- tbl[,c(ncol(tbl), 2:ncol(tbl)-1)]
     if (overallp == TRUE){
-        names(tbl) <- c("Variable", "Risk Ratio", "95% CI", "Wald p-value", "LR p-value")
+        names(tbl) <- c("Variable", "Odds Ratio", "95% CI", "Wald p-value", "LR p-value")
     }
     if (overallp == FALSE){
-        names(tbl) <- c("Variable", "Risk Ratio", "95% CI", "p-value")
+        names(tbl) <- c("Variable", "Odds Ratio", "95% CI", "p-value")
     }
     
     if (overallp == TRUE){
