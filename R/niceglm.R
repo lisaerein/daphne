@@ -78,7 +78,6 @@ niceglm    <- function(df,
     type[class %in% c("factor", "character")] <- 2
     
     if (is.na(family)) family <- summary(fit)$family[1]
-    if (is.na(link  )) link   <- summary(fit)$family[2]
     
     ########## formatting table of model coefficients ###############
     
