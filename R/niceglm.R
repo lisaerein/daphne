@@ -197,7 +197,10 @@ niceglm    <- function(df,
         }
         
         if (is.na(labels[1])) tmp$Variable <- covs[i]
-        if (!is.na(labels[1])) tmp$Variable <- labels[i]
+        if (!is.na(labels[1])) {
+          if (regtype == "multi") tmp$Variable <- labels[i]
+          if (regtype == "uni"  ) tmp$Variable <- labels[j]
+        }
         if (regtype == "uni") tmp$Variable <- paste(tmp$Variable, " (N = ", nobs_fit, ")", sep="")
         
         tbl <- rbind(tbl, tmp)
@@ -236,7 +239,10 @@ niceglm    <- function(df,
           title$Overall_pvalue <- op2
         }
         if (is.na(labels[1])) title$Variable <- covs[i]
-        if (!is.na(labels[1])) title$Variable <- labels[i]
+        if (!is.na(labels[1])) {
+          if (regtype == "multi") title$Variable <- labels[i]
+          if (regtype == "uni"  ) title$Variable <- labels[j]
+        }
         if (regtype == "uni") title$Variable <- paste(title$Variable, " (N = ", nobs_fit, ")", sep="")
         
         tmp$Variable <- paste("*", levels(df[,covs[i]])[2:nlevels(df[,covs[i]])], "vs.", 
