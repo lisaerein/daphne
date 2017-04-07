@@ -2,38 +2,56 @@
 % Please edit documentation in R/nicepolr.R
 \name{nicepolr}
 \alias{nicepolr}
-\title{Lisa's Ordinal Logistic Regression Table Function}
+\title{Lisa's Propoportional Odds Logistic Regression Table Function}
 \usage{
-nicepolr(df, fit, ref = FALSE, labels = NA, blanks = FALSE,
-  overallp = TRUE, est.dec = 2, ci.dec = 2, pval.dec = 3)
+nicepolr(df, fit = NA, method = "logistic", covs = NA, out = NA,
+  regtype = "multi", exp = TRUE, estname = "Estimate", labels = NA,
+  overallp = FALSE, est.dec = 2, ci.dec = 2, pval.dec = 3,
+  color = "#EEEEEE", printRMD = FALSE, htmlTable = TRUE)
 }
 \arguments{
-\item{df}{Dataframe.}
+\item{df}{Dataframe [REQUIRED].}
 
-\item{fit}{polr model object.}
+\item{fit}{polr model object [fit or method/covs/out are REQUIRED].}
 
-\item{ref}{If TRUE, the reference category gets its own line (left blank). Default is FALSE.}
+\item{method}{Method name in quotes ("logistic", "probit", "loglog", "cloglog", "cauchit") [REQUIRED if fit = NA].}
 
-\item{labels}{Covariate labels - default is NA (variable names are used).}
+\item{covs}{Vector of covariates to include in model [fit or method/covs/out are REQUIRED].}
 
-\item{blanks}{If TRUE, blank lines will be inserted separating covariates - default is FALSE.}
+\item{out}{Outcome for regression model [fit or method/covs/out are REQUIRED].}
+
+\item{regtype}{Should the covariates be run separately ("uni") or together in a multiple regression model ("multi") [REQUIRED if no fit].}
+
+\item{exp}{Option to exponentiate coefficients and CI's. Default is NA (estimates are only exponentiated for binomial and poisson method models by default).}
+
+\item{estname}{Option to override default estimate column name. Default is NA.}
 
 \item{overallp}{If TRUE, a likelihood ratio test pvalue (using drop1 Chisq tests) will be calculated for each variable. Default is TRUE.}
 
-\item{est.dec}{Number of decimal places for estimates - default is 2.}
+\item{est.dec}{Number of decimal places for estimates. Default is 2.}
 
-\item{ci.dec}{Number of decimal places for CI - default is 2.}
+\item{ci.dec}{Number of decimal places for 95% confidence interval. Default is 2.}
 
-\item{pval.dec}{Number of decimal places for pvalues - default is 3.}
+\item{pval.dec}{Number of decimal places for pvalues. Default is 3.}
 
-\item{intercept}{If TRUE the intercept will be included in the table. Default is FALSE.}
+\item{color}{Hex color to use for htmlTable output. Default is "#EEEEEE" (grey).}
+
+\item{printRMD}{Whether to print resulting table to Rmd via xtable. Default is FALSE}
+
+\item{htmlTable}{Whether to use htmlTable package to display table (instead of xtable). Default is TRUE}
 }
 \description{
-This function creates a nice looking regression table for polr objects
+This function creates a nice looking regression table for a polr {MASS} model. 
+Input either a polr object or outcome variable, vector of covariates, method, and type of analysis (bivariate or multiple regression). 
+The function returns a dataframe with regression coefficients. 
+By default a table is also printed via htmlTable - handy for R markdown html reports.
 }
+\keyword{coefficients}
 \keyword{logistic}
-\keyword{ordinal}
+\keyword{odds}
+\keyword{ordered}
 \keyword{polr}
+\keyword{proportional}
 \keyword{regression}
 \keyword{table}
 
