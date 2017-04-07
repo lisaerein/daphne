@@ -132,8 +132,8 @@ niceglm    <- function(df,
     names(coef_tbl)[grepl("Pr", names(coef_tbl))] <- "p_value"
     
     cimat <- data.frame(confint(fit))
-    
-    coef_tbl$CI <- apply(cimat,1,conf)
+    if (nrow(coef_tbl) == 1) coef_tbl$CI <- conf(t(cimat))
+    if (nrow(coef_tbl) >  1) coef_tbl$CI <- apply(cimat,1,conf)
     
     sformat <- paste("%.", pval.dec, "f", sep="")
     
