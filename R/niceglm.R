@@ -43,25 +43,25 @@ niceglm    <- function(df,
                        printRMD = FALSE,
                        htmlTable = TRUE){
   
-  # df  = test
-  # fit = fit  
-  # family = NA 
-  # covs = NA 
-  # out = NA 
-  # regtype = "multi" 
-  # exp = NA 
-  # estname = NA 
-  # intercept = FALSE 
-  # labels = NA  
-  # overallp = FALSE 
-  # est.dec = 2 
-  # ci.dec = 2 
-  # pval.dec = 3 
-  # color = "#EEEEEE" 
-  # printRMD = FALSE 
-  # htmlTable = TRUE
+  df  = test
+  fit = fit
+  family = NA
+  covs = NA
+  out = NA
+  regtype = "multi"
+  exp = NA
+  estname = NA
+  intercept = FALSE
+  labels = NA
+  overallp = FALSE
+  est.dec = 2
+  ci.dec = 2
+  pval.dec = 3
+  color = "#EEEEEE"
+  printRMD = FALSE
+  htmlTable = TRUE
   
-  ### run separate models for univariate and 1 model for multivarite analyses
+  ### run separate models for univariate and 1 model for multivariate analyses
   ### if model fit is provided, make table as is
   if (!is.na(fit[1])) regtype <- "multi"
   
@@ -73,8 +73,6 @@ niceglm    <- function(df,
     nmods <- 1
     covlist <- list(covs)
   }
-  
-  if (!is.na(fit)) nmods <- 1
   
   tbl_uni <- NULL
   rgroup_uni <- NULL
@@ -324,16 +322,17 @@ niceglm    <- function(df,
                                         fixed = T)
         
         ### create htmlTable
-        if (regtype == "uni"  ) rgroup <- rgroup_uni
-        if (regtype == "uni"  ) rowlab <- ""
-        if (regtype == "multi") rowlab <- paste("N =", nobs_fit)
+        if (regtype == "uni"  ) myrgroup <- rgroup_uni
+        if (regtype == "multi") myrgroup <- rgroup
+        if (regtype == "uni"  ) myrowlab <- ""
+        if (regtype == "multi") myrowlab <- paste("N =", nobs_fit)
         
         htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
                              rnames = final_html[,"Variable"],
-                             rowlabel = rowlab,
+                             rowlabel = myrowlab,
                              css.cell='border-collapse: collapse; padding: 4px;',
-                             col.rgroup=rgroup)
-        print(htmlver)
+                             col.rgroup=myrgroup)
+        knit_print(htmlver)
     }
     
     return(tbl)
