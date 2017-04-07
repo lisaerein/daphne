@@ -43,6 +43,24 @@ niceglm    <- function(df,
                        printRMD = FALSE,
                        htmlTable = TRUE){
   
+  # df  = test
+  # fit = fit  
+  # family = NA 
+  # covs = NA 
+  # out = NA 
+  # regtype = "multi" 
+  # exp = NA 
+  # estname = NA 
+  # intercept = FALSE 
+  # labels = NA  
+  # overallp = FALSE 
+  # est.dec = 2 
+  # ci.dec = 2 
+  # pval.dec = 3 
+  # color = "#EEEEEE" 
+  # printRMD = FALSE 
+  # htmlTable = TRUE
+  
   ### run separate models for univariate and 1 model for multivarite analyses
   ### if model fit is provided, make table as is
   if (!is.na(fit[1])) regtype <- "multi"
@@ -55,6 +73,8 @@ niceglm    <- function(df,
     nmods <- 1
     covlist <- list(covs)
   }
+  
+  if (!is.na(fit)) nmods <- 1
   
   tbl_uni <- NULL
   rgroup_uni <- NULL
