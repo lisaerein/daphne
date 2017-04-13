@@ -12,6 +12,7 @@ Imports:
     xtable,
     htmlTable,
     htmltools,
+    knitr,
     MASS 
 License: CC0
 LazyData: true

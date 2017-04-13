@@ -24,7 +24,8 @@
 #' @keywords glm table logistic poisson linear regression coefficients
 #' @importFrom xtable xtable 
 #' @importFrom htmlTable htmlTable
-#' @importFrom html_print htmltools
+#' @importFrom htmltools html_print
+#' @importFrom knitr knit_print
 #' @export 
 niceglm    <- function(df, 
                        fit = NA, 
@@ -336,6 +337,7 @@ niceglm    <- function(df,
                              css.cell='border-collapse: collapse; padding: 4px;',
                              col.rgroup=myrgroup)
         html_print(htmlver)
+        knit_print(htmlver)
     }
     
     return(tbl)
