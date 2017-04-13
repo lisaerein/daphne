@@ -330,8 +330,6 @@ niceglm    <- function(df,
         if (regtype == "uni"  ) myrowlab <- ""
         if (regtype == "multi") myrowlab <- paste("N =", nobs_fit)
         
-        rm(list=setdiff(ls(), c("final_html","myrgroup","myrowlab")))
-        
         htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
                              rnames = final_html[,"Variable"],
                              rowlabel = myrowlab,
@@ -345,9 +343,4 @@ niceglm    <- function(df,
 }
   
 
-# if (.Platform$OS.type == "unix")
-#   encoding <- "UTF-8"
-# else
-#   encoding <- "Windows-1252"
-# sjt.frq(efc$e15relat, encoding = encoding)
   

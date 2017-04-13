@@ -11,11 +11,15 @@ Depends:
 Imports:
     xtable,
     htmlTable
+    htmltools
+    MASS
 License: CC0
 LazyData: true
 Suggests:
     knitr,
     htmlTable
+    htmltools
+    MASS
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
 
