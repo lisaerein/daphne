@@ -17,7 +17,6 @@ Imports:
 License: CC0
 LazyData: true
 Suggests:
-    knitr
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
 
