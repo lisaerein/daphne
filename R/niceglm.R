@@ -336,7 +336,7 @@ niceglm    <- function(df,
                              rowlabel = myrowlab,
                              css.cell='border-collapse: collapse; padding: 4px;',
                              col.rgroup=myrgroup)
-        html_print(htmlver)
+        # html_print(htmlver)
         knit_print(htmlver)
     }
     
