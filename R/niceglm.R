@@ -24,6 +24,7 @@
 #' @keywords glm table logistic poisson linear regression coefficients
 #' @importFrom xtable xtable 
 #' @importFrom htmlTable htmlTable
+#' @importFrom html_print htmltools
 #' @export 
 niceglm    <- function(df, 
                        fit = NA, 
@@ -42,24 +43,24 @@ niceglm    <- function(df,
                        color = "#EEEEEE",
                        printRMD = FALSE,
                        htmlTable = TRUE){
-  
-  df  = test
-  fit = fit
-  family = NA
-  covs = NA
-  out = NA
-  regtype = "multi"
-  exp = NA
-  estname = NA
-  intercept = FALSE
-  labels = NA
-  overallp = FALSE
-  est.dec = 2
-  ci.dec = 2
-  pval.dec = 3
-  color = "#EEEEEE"
-  printRMD = FALSE
-  htmlTable = TRUE
+  ## for testing purposes
+  # df  = cvs
+  # fit = multi
+  # family = NA
+  # covs = NA
+  # out = NA
+  # regtype = "multi"
+  # exp = NA
+  # estname = NA
+  # intercept = FALSE
+  # labels = NA
+  # overallp = FALSE
+  # est.dec = 2
+  # ci.dec = 2
+  # pval.dec = 3
+  # color = "#EEEEEE"
+  # printRMD = FALSE
+  # htmlTable = TRUE
   
   ### run separate models for univariate and 1 model for multivariate analyses
   ### if model fit is provided, make table as is
@@ -310,7 +311,9 @@ niceglm    <- function(df,
         
         ### stop htmlTable from treating everything as a factor
         for (i in 1:ncol(final_html)){
-            final_html[,i] <- as.character(final_html[,i])
+            
+            if (class(final_html[,i]) != "character") final_html[,i] <- as.character(final_html[,i])
+            # Encoding(final_html[,i]) <- "latin1"
         }
         head <- grepl("*", final_html[,"Variable"], fixed =T) == FALSE
         final_html[head,"Variable"] <- paste("<b>",
@@ -327,16 +330,24 @@ niceglm    <- function(df,
         if (regtype == "uni"  ) myrowlab <- ""
         if (regtype == "multi") myrowlab <- paste("N =", nobs_fit)
         
+        rm(list=setdiff(ls(), c("final_html","myrgroup","myrowlab")))
+        
         htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
                              rnames = final_html[,"Variable"],
                              rowlabel = myrowlab,
                              css.cell='border-collapse: collapse; padding: 4px;',
                              col.rgroup=myrgroup)
-        knit_print(htmlver)
+        html_print(htmlver)
     }
     
     return(tbl)
 
 }
   
+
+# if (.Platform$OS.type == "unix")
+#   encoding <- "UTF-8"
+# else
+#   encoding <- "Windows-1252"
+# sjt.frq(efc$e15relat, encoding = encoding)
   
