@@ -10,15 +10,15 @@ Depends:
     R (>= 3.3.0)
 Imports:
     xtable,
-    htmlTable
-    htmltools
+    htmlTable,
+    htmltools,
     MASS
 License: CC0
 LazyData: true
 Suggests:
     knitr,
-    htmlTable
-    htmltools
+    htmlTable,
+    htmltools,
     MASS
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
