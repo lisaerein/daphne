@@ -46,9 +46,9 @@ niceglm    <- function(df,
                        htmlTable = TRUE){
   ## for testing purposes
   # df  = cvs
-  # fit = multi
+  # fit = uni
   # family = NA
-  # covs = NA
+  # covs = vars_all
   # out = NA
   # regtype = "multi"
   # exp = NA
@@ -70,6 +70,7 @@ niceglm    <- function(df,
   if (regtype == "uni"  ) {
     nmods <- length(covs)
     covlist <- as.list(covs)
+    intercept <- FALSE
   }
   if (regtype == "multi") {
     nmods <- 1
@@ -183,6 +184,7 @@ niceglm    <- function(df,
     
     if (intercept == TRUE){
       tbl <- coef_tbl["(Intercept)",]
+      rgroup <- "none"
       if (overallp == TRUE) tbl$Overall_pvalue <- NA
       tbl$Variable <- "(Intercept)"
     }
@@ -275,8 +277,9 @@ niceglm    <- function(df,
       }   
       
       ### set colors for htmlTable striping
-      if (i %% 2 == 0) rgroup <- c(rgroup, rep("none", ngroups)) 
       if (i %% 2 != 0) rgroup <- c(rgroup, rep(color, ngroups)) 
+      if (i %% 2 == 0) rgroup <- c(rgroup, rep("none", ngroups)) 
+      
     }
     
     tbl <- tbl[,c(ncol(tbl), 2:ncol(tbl)-1)]
