@@ -19,19 +19,19 @@
 #' @importFrom xtable xtable
 #' @export 
 nicegee <- function(df, 
-                        fit, 
-                        family = "gaussian",
-                        id,
-                        corstr="exch",
-                        intercept = FALSE,
-                        ref = FALSE,
-                        labels = NA, 
-                        blanks = FALSE,
-                        overallp = FALSE,
-                        est.dec = 2,
-                        ci.dec = 2,
-                        pval.dec = 3,
-                        estname = NA){
+                    fit, 
+                    family = "gaussian",
+                    id,
+                    corstr="exch",
+                    intercept = FALSE,
+                    ref = FALSE,
+                    labels = NA, 
+                    blanks = FALSE,
+                    overallp = FALSE,
+                    est.dec = 2,
+                    ci.dec = 2,
+                    pval.dec = 3,
+                    estname = NA){
     library(xtable)
   
     df <- data.frame(df)

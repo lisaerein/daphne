@@ -21,11 +21,13 @@
 #' @param htmlTable Whether to use htmlTable package to display table (instead of xtable). Default is TRUE
 #' @param color Hex color to use for htmlTable output. Default is "#EEEEEE" (grey).
 #' @param printRMD Whether to print resulting table to Rmd via xtable. Default is FALSE
+#' @param printR2 Whether to include R squared value in label (rsq package, type 'v').
 #' @keywords glm table logistic poisson linear regression coefficients
 #' @importFrom xtable xtable 
 #' @importFrom htmlTable htmlTable
 #' @importFrom htmltools html_print
 #' @importFrom knitr knit_print
+#' @importFrom rsq rsq
 #' @export 
 niceglm    <- function(df, 
                        fit = NA, 
@@ -43,6 +45,7 @@ niceglm    <- function(df,
                        pval.dec = 3,
                        color = "#EEEEEE",
                        printRMD = FALSE,
+                       printR2 = FALSE,
                        htmlTable = TRUE){
   ## for testing purposes
   # df  = cvs
@@ -333,6 +336,11 @@ niceglm    <- function(df,
         if (regtype == "multi") myrgroup <- rgroup
         if (regtype == "uni"  ) myrowlab <- ""
         if (regtype == "multi") myrowlab <- paste("N =", nobs_fit)
+        
+        if (printR2 & (regtype == "multi")){
+          R2 <- sprintf("%4.3f",round(rsq(fit),3))
+          myrowlab <- paste("N = ", nobs_fit, "; R2 = ", R2, sep="")
+        }
         
         htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
                              rnames = final_html[,"Variable"],
