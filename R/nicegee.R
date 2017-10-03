@@ -7,6 +7,7 @@
 #' Default is FALSE.
 #' @param family Model family in quotes ("guassian", "binomial", "poisson"). 
 #' @param id id variable.
+#' @param exp Exponentiate estimates and CI's? (T or F).
 #' @param corstr corstr type ("exch" is default).
 #' @param labels Covariate labels - default is NA.
 #' @param blanks If TRUE, blank lines will be inserted separating covariates - default is FALSE.
@@ -27,6 +28,7 @@ nicegee <- function(df,
                     ref = FALSE,
                     labels = NA, 
                     blanks = FALSE,
+                    exp = FALSE,
                     overallp = FALSE,
                     est.dec = 2,
                     ci.dec = 2,
@@ -38,7 +40,6 @@ nicegee <- function(df,
     
     df <- data.frame(df)
     
-    exp <- FALSE
     if (family %in% c("binomial", "poisson")){
         exp <- TRUE
     }
