@@ -345,6 +345,7 @@ niceglm    <- function(df,
         htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
                              rnames = final_html[,"Variable"],
                              rowlabel = myrowlab,
+                             escape.html = FALSE,
                              css.cell='border-collapse: collapse; padding: 4px;',
                              col.rgroup=myrgroup)
         print(htmlver)
