@@ -309,6 +309,7 @@ niceglmer <- function(df,
                          rnames = final_html[,"Variable"],
                          rowlabel = paste("N =", summary(fit)$ngrps),
                          css.cell='border-collapse: collapse; padding: 4px;',
+                         escape.html = FALSE,
                          col.rgroup=rgroup)
     print(htmlver)
   }
