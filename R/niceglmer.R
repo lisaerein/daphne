@@ -305,9 +305,12 @@ niceglmer <- function(df,
                                     fixed = T)
     
     ### create htmlTable
+    nobs  <- length(summary(fit)$residuals)
+    ngrps <- summary(fit)$ngrps
+    
     htmlver <- htmlTable(x = final_html[,2:ncol(final_html)],
                          rnames = final_html[,"Variable"],
-                         rowlabel = paste("N =", summary(fit)$ngrps),
+                         rowlabel = paste("N obs = ", nobs, "; N groups = ", ngrps, sep=""),
                          css.cell='border-collapse: collapse; padding: 4px;',
                          escape.html = FALSE,
                          col.rgroup=rgroup)
