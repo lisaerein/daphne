@@ -41,9 +41,9 @@ nicepolr(df, fit = NA, method = "logistic", covs = NA, out = NA,
 \item{htmlTable}{Whether to use htmlTable package to display table (instead of xtable). Default is TRUE}
 }
 \description{
-This function creates a nice looking regression table for a polr {MASS} model. 
-Input either a polr object or outcome variable, vector of covariates, method, and type of analysis (bivariate or multiple regression). 
-The function returns a dataframe with regression coefficients. 
+This function creates a nice looking regression table for a polr {MASS} model.
+Input either a polr object or outcome variable, vector of covariates, method, and type of analysis (bivariate or multiple regression).
+The function returns a dataframe with regression coefficients.
 By default a table is also printed via htmlTable - handy for R markdown html reports.
 }
 \keyword{coefficients}
