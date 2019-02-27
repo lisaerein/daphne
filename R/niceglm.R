@@ -47,24 +47,32 @@ niceglm    <- function(df,
                        printRMD = FALSE,
                        printR2 = FALSE,
                        htmlTable = TRUE){
+  
   ## for testing purposes
-  # df  = cvs
-  # fit = uni
-  # family = NA
-  # covs = vars_all
-  # out = NA
-  # regtype = "multi"
-  # exp = NA
-  # estname = NA
-  # intercept = FALSE
-  # labels = NA
-  # overallp = FALSE
-  # est.dec = 2
-  # ci.dec = 2
-  # pval.dec = 3
-  # color = "#EEEEEE"
-  # printRMD = FALSE
-  # htmlTable = TRUE
+  library(MASS)
+  head(survey <- survey)
+  survey$out01 <- as.numeric(survey$Sex)-1
+  df  = survey
+  fit = NA
+  family = 
+  covs = c("Sex", "Age", "Height")
+  # out = "Wr.Hnd"
+  # family = "gaussian"
+  out = "out01"
+  family = "binomial"
+  regtype = "uni"
+  exp = NA
+  estname = NA
+  intercept = FALSE
+  labels = NA
+  overallp = FALSE
+  est.dec = 2
+  ci.dec = 2
+  pval.dec = 3
+  color = "#EEEEEE"
+  printRMD = FALSE
+  printR2 = TRUE
+  htmlTable = TRUE
   
   ### run separate models for univariate and 1 model for multivariate analyses
   ### if model fit is provided, make table as is
@@ -90,6 +98,13 @@ niceglm    <- function(df,
       
       form <- as.formula(paste(out, "~", paste(covlist[[j]], collapse = " + ")))
       fit <- glm(form, data = df, family = family)
+    }
+      
+    ### calcaulate r-squared
+    rsq <- 1 - (fit$deviance/fit$null.deviance)
+    if (family(fit)$family == "gaussian"){
+        fit <- lm(form, data = df)
+        rsq <- summary(fit)$r.squared
     }
     
     ### get family/covariates/types from glm object (fit) attributes
@@ -338,7 +353,8 @@ niceglm    <- function(df,
         if (regtype == "multi") myrowlab <- paste("N =", nobs_fit)
         
         if (printR2 & (regtype == "multi")){
-          R2 <- sprintf("%4.3f",round(rsq(fit),3))
+          # rsq <- 1-(fit$deviance/fit$null.deviance)    
+          R2 <- sprintf("%4.3f",round(rsq,3))
           myrowlab <- paste("N = ", nobs_fit, "; R2 = ", R2, sep="")
         }
         
