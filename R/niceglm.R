@@ -21,7 +21,7 @@
 #' @param htmlTable Whether to use htmlTable package to display table (instead of xtable). Default is TRUE
 #' @param color Hex color to use for htmlTable output. Default is "#EEEEEE" (grey).
 #' @param printRMD Whether to print resulting table to Rmd via xtable. Default is FALSE
-#' @param printR2 Whether to include R squared value in label (rsq package, type 'v').
+#' @param printR2 Whether to include R squared value in label. Default = FALSE.
 #' @keywords glm table logistic poisson linear regression coefficients
 #' @importFrom xtable xtable
 #' @importFrom htmlTable htmlTable
@@ -48,30 +48,30 @@ niceglm    <- function(df,
                        htmlTable = TRUE){
 
   ## for testing purposes
-  library(MASS)
-  head(survey <- survey)
-  survey$out01 <- as.numeric(survey$Sex)-1
-  df  = survey
-  fit = NA
-  family =
-  covs = c("Sex", "Age", "Height")
-  # out = "Wr.Hnd"
-  # family = "gaussian"
-  out = "out01"
-  family = "binomial"
-  regtype = "uni"
-  exp = NA
-  estname = NA
-  intercept = FALSE
-  labels = NA
-  overallp = FALSE
-  est.dec = 2
-  ci.dec = 2
-  pval.dec = 3
-  color = "#EEEEEE"
-  printRMD = FALSE
-  printR2 = TRUE
-  htmlTable = TRUE
+  # library(MASS)
+  # head(survey <- survey)
+  # survey$out01 <- as.numeric(survey$Sex)-1
+  # df  = survey
+  # fit = NA
+  # family =
+  # covs = c("Sex", "Age", "Height")
+  # # out = "Wr.Hnd"
+  # # family = "gaussian"
+  # out = "out01"
+  # family = "binomial"
+  # regtype = "uni"
+  # exp = NA
+  # estname = NA
+  # intercept = FALSE
+  # labels = NA
+  # overallp = FALSE
+  # est.dec = 2
+  # ci.dec = 2
+  # pval.dec = 3
+  # color = "#EEEEEE"
+  # printRMD = FALSE
+  # printR2 = TRUE
+  # htmlTable = TRUE
 
   ### run separate models for univariate and 1 model for multivariate analyses
   ### if model fit is provided, make table as is
