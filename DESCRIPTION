@@ -18,5 +18,4 @@ License: CC0
 LazyData: true
 Suggests:
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
-
+RoxygenNote: 6.1.0

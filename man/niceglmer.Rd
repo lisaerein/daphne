@@ -51,4 +51,3 @@ This function creates a nice looking regression table from a lmer/glmer object
 \keyword{mixed}
 \keyword{regression}
 \keyword{table}
-

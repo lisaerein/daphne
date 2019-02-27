@@ -54,4 +54,3 @@ By default a table is also printed via htmlTable - handy for R markdown html rep
 \keyword{proportional}
 \keyword{regression}
 \keyword{table}
-

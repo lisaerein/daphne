@@ -7,7 +7,8 @@
 niceglm(df, fit = NA, family = NA, covs = NA, out = NA,
   regtype = "multi", exp = NA, estname = NA, intercept = FALSE,
   labels = NA, overallp = FALSE, est.dec = 2, ci.dec = 2,
-  pval.dec = 3, color = "#EEEEEE", printRMD = FALSE, htmlTable = TRUE)
+  pval.dec = 3, color = "#EEEEEE", printRMD = FALSE,
+  printR2 = FALSE, htmlTable = TRUE)
 }
 \arguments{
 \item{df}{Dataframe [REQUIRED].}
@@ -40,12 +41,14 @@ niceglm(df, fit = NA, family = NA, covs = NA, out = NA,
 
 \item{printRMD}{Whether to print resulting table to Rmd via xtable. Default is FALSE}
 
+\item{printR2}{Whether to include R squared value in label (rsq package, type 'v').}
+
 \item{htmlTable}{Whether to use htmlTable package to display table (instead of xtable). Default is TRUE}
 }
 \description{
-This function creates a nice looking regression table for a glm model. 
-Input either a glm object or outcome variable, vector of covariates, model family, and type of analysis (bivariate or multiple regression). 
-The function returns a dataframe with regression coefficients. 
+This function creates a nice looking regression table for a glm model.
+Input either a glm object or outcome variable, vector of covariates, model family, and type of analysis (bivariate or multiple regression).
+The function returns a dataframe with regression coefficients.
 By default a table is also printed via htmlTable - handy for R markdown html reports.
 }
 \keyword{coefficients}
@@ -55,4 +58,3 @@ By default a table is also printed via htmlTable - handy for R markdown html rep
 \keyword{poisson}
 \keyword{regression}
 \keyword{table}
-

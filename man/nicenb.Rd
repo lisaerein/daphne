@@ -37,4 +37,3 @@ This function creates a nice looking regression table from a glm.nb object
 \keyword{negative}
 \keyword{regression}
 \keyword{table}
-

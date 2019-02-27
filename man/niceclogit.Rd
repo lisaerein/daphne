@@ -6,7 +6,8 @@
 \usage{
 niceclogit(df, fit, intercept = FALSE, ref = FALSE, labels = NA,
   blanks = FALSE, overallp = TRUE, est.dec = 2, ci.dec = 2,
-  pval.dec = 3, htmlTable = FALSE, color = "#EEEEEE", printRMD = TRUE)
+  pval.dec = 3, htmlTable = FALSE, color = "#EEEEEE",
+  printRMD = TRUE)
 }
 \arguments{
 \item{df}{Dataframe.}
@@ -43,4 +44,3 @@ This function creates a nice looking regression table from a clogit object. Esti
 \keyword{logistic}
 \keyword{regression}
 \keyword{table}
-

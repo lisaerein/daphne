@@ -6,8 +6,8 @@
 \usage{
 nicegee(df, fit, family = "gaussian", id, corstr = "exch",
   intercept = FALSE, ref = FALSE, labels = NA, blanks = FALSE,
-  overallp = FALSE, est.dec = 2, ci.dec = 2, pval.dec = 3,
-  estname = NA)
+  exp = FALSE, overallp = FALSE, est.dec = 2, ci.dec = 2,
+  pval.dec = 3, estname = NA)
 }
 \arguments{
 \item{df}{Dataframe.}
@@ -26,6 +26,8 @@ Default is FALSE.}
 \item{labels}{Covariate labels - default is NA.}
 
 \item{blanks}{If TRUE, blank lines will be inserted separating covariates - default is FALSE.}
+
+\item{exp}{Exponentiate estimates and CI's? (T or F).}
 
 \item{overallp}{is whether to do overall Chisq test per variable}
 
@@ -47,4 +49,3 @@ Lisa's GEE Regression Table Function - fit must be geeglm type model
 \keyword{pretty}
 \keyword{regression}
 \keyword{table}
-
